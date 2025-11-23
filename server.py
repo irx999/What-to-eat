@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 import http.server
-import socketserver
 import os
+import socketserver
 
 # 定义端口
 PORT = 8000
 
 # 设置当前目录为服务器根目录
-web_dir = os.path.join(os.path.dirname(__file__), '.')
+web_dir = os.path.join(os.path.dirname(__file__), ".")
 os.chdir(web_dir)
 
 # 创建处理器和服务器

@@ -100,14 +100,7 @@ $(function () {
       "乡村基"
     ],
     "天街": [
-      "海底捞",
-      "西贝莜面村",
-      "外婆家",
-      "绿茶餐厅",
-      "小龙坎火锅",
-      "太二酸菜鱼",
-      "喜茶",
-      "奈雪の茶"
+      "没写",
     ],
     "special": [
       "豪客来"
@@ -177,7 +170,7 @@ $(function () {
         "company": resourceData.company,
         "天街": resourceData.天街,
         "special": resourceData.special,
-        "monster": ["键盘鼠标套餐", "代码自助餐", "Bug修复汤", "程序员能量饮料", "996补血汤"]
+        "monster": resourceData.monster,
       },
       
       // 晚饭选项
@@ -186,7 +179,7 @@ $(function () {
         "company": resourceData.company,
         "天街": resourceData.天街,
         "special": resourceData.special,
-        "monster": ["空气", "西北风", "emoji大餐", "精神食粮", "代码套餐", "Bug修复汤"]
+        "monster": resourceData.monster,
       },
       
       nonFoodItems =
@@ -303,7 +296,7 @@ $(function () {
       if ("monster" == userType) {
         alert("注意！前方高能！");
       } else {
-        alert("还是人类好吃呢Ψ(￣∀￣)Ψ");
+        
       }
       
       clickCount = 0;
