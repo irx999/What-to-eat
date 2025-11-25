@@ -1,7 +1,7 @@
 $(function () {
   // 从resource.json加载数据
   var resourceData = {
-    human: [
+    正常选项: [
       "黄焖鸡米饭",
       "沙县小吃",
       "兰州拉面",
@@ -55,7 +55,7 @@ $(function () {
       "本帮菜",
       "全家便当",
     ],
-    company: [
+    公司周边: [
       "兰芽",
       "小果野蕉",
       "京百炉",
@@ -99,9 +99,9 @@ $(function () {
       "大米先生",
       "乡村基",
     ],
-    天街: ["没写"],
-    special: ["豪客来"],
-    monster: [
+    龙湖天街: ["没写"],
+    特殊: ["豪客来"],
+    非正常人类: [
       "空气",
       "西北风",
       "emoji大餐",
@@ -167,19 +167,19 @@ $(function () {
     ],
     // 午饭选项
     lunchOptions = {
-      human: resourceData.human,
-      company: resourceData.company,
-      天街: resourceData.天街,
-      special: resourceData.special,
-      monster: resourceData.monster,
+      正常选项: resourceData.正常选项,
+      公司周边: resourceData.公司周边,
+      龙湖天街: resourceData.龙湖天街,
+      特殊: resourceData.特殊,
+      非正常人类: resourceData.非正常人类,
     },
     // 晚饭选项
     dinnerOptions = {
-      human: resourceData.human,
-      company: resourceData.company,
-      天街: resourceData.天街,
-      special: resourceData.special,
-      monster: resourceData.monster,
+      正常选项: resourceData.正常选项,
+      公司周边: resourceData.公司周边,
+      龙湖天街: resourceData.龙湖天街,
+      特殊: resourceData.特殊,
+      非正常人类: resourceData.非正常人类,
     },
     nonFoodItems =
       "冰箱 书桌 电扇 空调 马桶 翔 鼠标 键盘 显示器 电视 台灯 饭盒 iPad iPhone 手机 餐巾纸 电话 椅子 纸箱 窗帘 插座 被单 报纸 杂志 相框 照片 衣服 内裤 内衣 袜子 妹子 汉子 砖头 混凝土 钢筋 塑料袋 衣架 书 手环 手表 鼠标垫 眼药水 跑车 自行车 三轮车 坦克 潜水艇 飞机 火箭 U盘 CPU 显卡 刀片 碎玻璃 圆珠笔 钢笔 交通卡 银行卡 身份证 户口簿 橡皮筋 双面胶 502胶水 订书机 螺丝刀 锤子 榔头 垃圾桶 花花草草 树皮 洗手液 妇炎洁 姨妈巾 哆啦A梦 仙人掌 企鹅 大熊猫 穿山甲 米老鼠 唐老鸭 跳跳虎 旅行箱 DVD 音响 热水器 热水袋 电热棒 电池 充电器 相机 自拍杆 耳机 吊灯 雨伞 钱包 鞋子 人字拖 床垫 绣花针 戒指 窨井盖 路灯 主板 程序猿 工程狮 电线 摄像头 西北风 生活 路由器 洗手液 沐浴露 肥皂 羽毛球拍 保龄球 皮带 皮鞭 电池 牙膏 手电筒 瑜伽垫 假发 82年的自来水 马蜂窝 瑞士军刀 地板 水管 电钻".split(
@@ -195,7 +195,7 @@ $(function () {
     wrapperEl = $("#wrapper"),
     osEl = $(".os"),
     clickCount = 0,
-    userType = "human",
+    userType = "正常选项",
     windowHeight,
     windowWidth,
     timer;
@@ -203,10 +203,10 @@ $(function () {
   // 根据时间选择午餐或晚餐选项
   function getCurrentOptions() {
     if (
-      userType === "human" ||
-      userType === "company" ||
-      userType === "天街" ||
-      userType === "special"
+      userType === "正常选项" ||
+      userType === "公司周边" ||
+      userType === "龙湖天街" ||
+      userType === "特殊"
     ) {
       if (currentTime === 1) {
         // 午饭
@@ -234,7 +234,7 @@ $(function () {
   startBtn.click(function () {
     if ((bodyEl.toggleClass("playing", !isRunning), isRunning)) {
       isRunning = 0;
-      if ("monster" == userType) {
+      if ("非正常人类" == userType) {
         osEl.text(funnyComments[getRandomInt(funnyComments.length)]);
       }
       punctuationEl.text("！");
@@ -297,7 +297,7 @@ $(function () {
       $(this).addClass("selected").siblings().removeClass("selected");
       userType = $(this).data("type");
 
-      if ("monster" == userType) {
+      if ("非正常人类" == userType) {
         alert("注意！前方高能！");
       } else {
       }

@@ -209,23 +209,23 @@ body {
 }
 
 /* 为不同的选项类型设置特定颜色 */
-#toggle [data-type="human"].selected {
+#toggle [data-type="正常选项"].selected {
   background-color: #00bdd6;
 }
 
-#toggle [data-type="company"].selected {
+#toggle [data-type="公司周边"].selected {
   background-color: #4CAF50;
 }
 
-#toggle [data-type="wanda"].selected {
+#toggle [data-type="龙湖天街"].selected {
   background-color: #FF9800;
 }
 
-#toggle [data-type="special"].selected {
+#toggle [data-type="特殊"].selected {
   background-color: #9C27B0;
 }
 
-#toggle [data-type="monster"].selected {
+#toggle [data-type="非正常人类"].selected {
   background-color: #e80773;
 }
 
