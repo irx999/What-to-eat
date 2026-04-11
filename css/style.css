@@ -149,7 +149,6 @@ body {
   -webkit-transform: translate3d(0, 0, 0);
   transform: translate3d(0, 0, 0);
   overflow: hidden;
-  height: 100%;
   position: absolute;
   top: 0;
   left: 0;
@@ -229,11 +228,6 @@ body {
   background-color: #e80773;
 }
 
-/* 移除原来的滑块元素 */
-#toggle .hb {
-  display: none;
-}
-
 .playing #toggle {
   -webkit-transform: translateX(-50%) translateY(200%);
   -ms-transform: translateX(-50%) translateY(200%);
@@ -243,7 +237,7 @@ body {
 
 .comment {
   position: absolute;
-  top:30%;
+  top: 30%;
   left: 50%;
   -webkit-transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
