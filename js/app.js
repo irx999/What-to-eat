@@ -1,5 +1,5 @@
 $(function () {
-  // 从resource.json加载数据
+  // 食物分类数据；保持静态页面无需额外请求。
   var resourceData = {
     正常选项: [
       "黄焖鸡米饭",
@@ -113,35 +113,31 @@ $(function () {
 
   function getRandomInt(upper, lower) {
     lower = lower || 0;
-    return Math.ceil(Math.random() * (upper - lower) + lower);
+    return Math.floor(Math.random() * Math.max(0, upper - lower)) + lower;
   }
 
   function showComment(text) {
-    var comment = $("<div class='comment'>" + text + "</div>");
+    var comment = $("<div class='comment'></div>").text(text);
     comment
       .on("animationend webkitAnimationEnd", function (event) {
         $(this).remove();
       })
       .appendTo($("body"));
+    // 动画被禁用时也要清理提示。
+    setTimeout(function () {
+      comment.remove();
+    }, 3200);
   }
 
-  function updateTime(timeIndex, showTip) {
+  function updateTime(timeIndex) {
     if (!isRunning) {
       currentTime = timeIndex;
       $(".time").text(mealTimes[timeIndex][0]);
-      $(".what").text("什么");
-      $(".punctuation").text("？");
       $(".title").addClass("shake");
       clickCount = 0;
 
-      if (showTip) {
-        var tip = $(".tip").show();
-        setTimeout(function () {
-          tip.remove();
-        }, 4000);
-      }
-
-      _hmt.push(["_trackEvent", "time", "change", mealTimes[timeIndex][0]]);
+      resetResult();
+      trackEvent("time", "change", mealTimes[timeIndex][0]);
     }
   }
 
@@ -177,7 +173,48 @@ $(function () {
     userType = "正常选项",
     windowHeight,
     windowWidth,
-    timer;
+    timer,
+    categoryButtons = $("#toggle button"),
+    mealButton = $(".time"),
+    resultEl = $("#result"),
+    reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+  function trackEvent(category, action, label) {
+    if (window._hmt && typeof window._hmt.push === "function") {
+      window._hmt.push(["_trackEvent", category, action, label]);
+    }
+  }
+
+  function resetResult() {
+    whatEl.text("什么");
+    punctuationEl.text("？");
+    startBtn.find("span").text("开始");
+    osEl.text("");
+    resultEl.text("");
+    document.title = "我们天天都要吃些什么";
+  }
+
+  function setRunning(running) {
+    isRunning = running;
+    bodyEl.toggleClass("playing", running);
+    startBtn.attr("aria-pressed", String(running));
+    categoryButtons.prop("disabled", running);
+    mealButton.prop("disabled", running);
+  }
+
+  function stopPicker() {
+    if (!isRunning) return;
+    clearTimeout(timer);
+    setRunning(false);
+    tempContainer.empty();
+    if (userType === "非正常人类") {
+      osEl.text(funnyComments[getRandomInt(funnyComments.length)]);
+    }
+    punctuationEl.text("！");
+    startBtn.find("span").text("换一个");
+    resultEl.text(titleEl.text());
+    document.title = titleEl.text() + "这是一个很无聊的网站，但能解决你的人生一大困扰！选择困难户必备！";
+  }
 
   function getCurrentOptions() {
     if (userType === "非正常人类") {
@@ -198,20 +235,11 @@ $(function () {
   });
 
   startBtn.click(function () {
-    bodyEl.toggleClass("playing", !isRunning);
     if (isRunning) {
-      isRunning = false;
-      if (userType === "非正常人类") {
-        osEl.text(funnyComments[getRandomInt(funnyComments.length)]);
-      }
-      punctuationEl.text("！");
-      startBtn.find("span").text("换一个");
-      clearTimeout(timer);
-      document.title =
-        titleEl.text() +
-        "这是一个很无聊的网站，但能解决你的人生一大困扰！选择困难户必备！";
+      stopPicker();
     } else {
-      isRunning = true;
+      setRunning(true);
+      resultEl.text("");
       clickCount++;
 
       switch (clickCount) {
@@ -238,30 +266,33 @@ $(function () {
 
       (function animateText() {
         var options = getCurrentOptions();
-        var randomIndex = getRandomInt(options.length) - 1;
+        var randomIndex = getRandomInt(options.length);
         var randomItem = options[randomIndex];
-        var topPos = getRandomInt(windowHeight);
-        var leftPos = getRandomInt(windowWidth - 50);
-        var fontSize = getRandomInt(37, 14);
-
         whatEl.text(randomItem);
-        $("<span class='temp'>" + randomItem + "</span>")
-          .css({
-            top: topPos,
-            left: leftPos,
-            color: "rgba(0,0,0," + getRandomInt(7, 3) / 10 + ")",
-            fontSize: fontSize + "px",
-          })
-          .appendTo(tempContainer);
+        if (!reducedMotion.matches) {
+          // 限制节点数，即使 animationend 未触发也不会无限增长。
+          if (tempContainer.children().length >= 32) {
+            tempContainer.children().first().remove();
+          }
+          $("<span class='temp'></span>").text(randomItem)
+            .css({
+              top: getRandomInt(Math.max(1, windowHeight - 40)),
+              left: getRandomInt(Math.max(1, windowWidth - 100)),
+              color: "rgba(0,0,0," + getRandomInt(8, 3) / 10 + ")",
+              fontSize: getRandomInt(38, 14) + "px",
+            })
+            .appendTo(tempContainer);
+        }
 
-        timer = setTimeout(animateText, 60);
+        timer = setTimeout(animateText, reducedMotion.matches ? 200 : 60);
       })();
     }
   });
 
-  $("#toggle span").click(function () {
-    if (!$(this).hasClass("selected")) {
-      $(this).addClass("selected").siblings().removeClass("selected");
+  categoryButtons.click(function () {
+    if (!isRunning && !$(this).hasClass("selected")) {
+      categoryButtons.removeClass("selected").attr("aria-pressed", "false");
+      $(this).addClass("selected").attr("aria-pressed", "true");
       userType = $(this).data("type");
 
       if (userType === "非正常人类") {
@@ -269,33 +300,40 @@ $(function () {
       }
 
       clickCount = 0;
-      _hmt.push(["_trackEvent", "type", "toggle", userType]);
+      resetResult();
+      trackEvent("type", "toggle", userType);
     }
   });
 
   if (currentHour < 9) {
-    updateTime(0, 1);
+    updateTime(0);
   } else if (currentHour < 13) {
-    updateTime(1, 1);
+    updateTime(1);
   } else {
-    updateTime(2, 1);
+    updateTime(2);
   }
 
   titleEl.click(function () {
     updateTime(currentTime >= mealTimes.length - 1 ? 0 : currentTime + 1);
   });
 
-  bodyEl
+  $(window)
     .resize(function () {
-      windowWidth = bodyEl.width();
-      windowHeight = bodyEl.height();
+      windowWidth = window.innerWidth;
+      windowHeight = window.innerHeight;
     })
     .resize();
 
   $(document).keydown(function (event) {
-    if (event.which === 32) {
-      startBtn.click();
-      event.preventDefault();
-    }
+    if (event.key !== " " && event.which !== 32) return;
+    // 保留原生按钮的空格操作；输入框与组合键不触发全局快捷键。
+    if ($(event.target).closest("button, input, textarea, select, a, [contenteditable]").length ||
+        event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
+    event.preventDefault();
+    if (!event.repeat) startBtn.click();
   });
+  $(document).on("visibilitychange", function () {
+    if (document.hidden) stopPicker();
+  });
+  $(window).on("pagehide", stopPicker);
 });

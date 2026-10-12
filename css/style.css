@@ -186,7 +186,7 @@ body {
   justify-content: space-between;
 }
 
-#toggle span {
+#toggle button {
   color: #999;
   padding: 5px 8px;
   display: inline-block;
@@ -201,7 +201,7 @@ body {
   margin: 0 1px;
 }
 
-#toggle span.selected {
+#toggle button.selected {
   color: #fff;
   background-color: #00bdd6;
   font-weight: bold;
@@ -401,4 +401,22 @@ body {
   100% {
     background-position: 50% 100%;
   }
+}
+/* 原生按钮保留现有外观，同时支持键盘和辅助技术。 */
+button { font: inherit; }
+#start { border: 0; }
+.time { background: none; border: 0; padding: 0; cursor: pointer; }
+#toggle button { border: 0; background: transparent; }
+button:focus-visible { outline: 3px solid #333; outline-offset: 4px; }
+button:disabled { cursor: default; }
+.playing #toggle { visibility: hidden; pointer-events: none; }
+#temp_container { pointer-events: none; }
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  .bg, .title, .comment { animation: none; -webkit-animation: none; }
+  #toggle, #toggle button { transition: none; -webkit-transition: none; }
+  #temp_container { display: none; }
 }
