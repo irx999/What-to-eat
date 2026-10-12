@@ -1,26 +1,23 @@
 #!/usr/bin/env python3
-import http.server
-import os
-import socketserver
+"""Serve the static site locally without changing the working directory."""
+
+from functools import partial
+from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
+from pathlib import Path
+
+HOST = "127.0.0.1"
+PORT = 8001
+ROOT = Path(__file__).resolve().parent
 
 
 def main():
-    PORT = 8001
-
-    web_dir = os.path.join(os.path.dirname(__file__), ".")
-    os.chdir(web_dir)
-
-    Handler = http.server.SimpleHTTPRequestHandler
-    httpd = socketserver.TCPServer(("", PORT), Handler)
-
-    print(f"服务器已在端口 {PORT} 启动")
-    print(f"访问 http://localhost:{PORT} 查看应用")
-
-    try:
-        httpd.serve_forever()
-    except KeyboardInterrupt:
-        print("\n服务器已关闭")
-        httpd.shutdown()
+    handler = partial(SimpleHTTPRequestHandler, directory=str(ROOT))
+    with ThreadingHTTPServer((HOST, PORT), handler) as server:
+        print(f"访问 http://{HOST}:{PORT} 查看应用（Ctrl+C 退出）")
+        try:
+            server.serve_forever()
+        except KeyboardInterrupt:
+            print("\n服务器已关闭")
 
 
 if __name__ == "__main__":

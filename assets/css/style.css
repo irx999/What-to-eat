@@ -1,3 +1,4 @@
+/* 页面基础 */
 html,
 body {
   overflow: hidden;
@@ -21,6 +22,7 @@ body {
   -webkit-tap-highlight-color: transparent;
 }
 
+/* 背景 */
 .bg {
   background: #e9e9e9 url(../images/bg.jpg) 50% 0;
   -webkit-transform: translate3d(0, 0, 0);
@@ -40,6 +42,7 @@ body {
   animation-play-state: paused;
 }
 
+/* 标题和开始按钮 */
 #wrapper {
   width: 90%;
   max-width: 640px;
@@ -145,6 +148,7 @@ body {
   box-shadow: inset 0 1px #ffb050, 0 2px 3px rgba(0, 0, 0, 0.2);
 }
 
+/* 候选项装饰动画 */
 #temp_container {
   -webkit-transform: translate3d(0, 0, 0);
   transform: translate3d(0, 0, 0);
@@ -165,7 +169,7 @@ body {
   white-space: nowrap;
 }
 
-/* 更新选项切换栏样式 */
+/* 食物分类 */
 #toggle {
   position: absolute;
   bottom: 60px;
@@ -180,7 +184,6 @@ body {
   transition: 0.3s;
   z-index: 4;
   font-size: 12px;
-  /* 增加宽度以容纳更多选项 */
   min-width: 280px;
   display: flex;
   justify-content: space-between;
@@ -194,7 +197,6 @@ body {
   -webkit-transition: 0.3s;
   transition: 0.3s;
   line-height: 1;
-  /* 调整文本对齐 */
   text-align: center;
   flex-grow: 1;
   border-radius: 15px;
@@ -253,30 +255,7 @@ body {
   animation: comment 3s both;
 }
 
-#ribbon {
-  background: url(http://tool.h5ma.com/chi/img/icon.png) no-repeat;
-  -webkit-background-size: contain;
-  background-size: contain;
-  width: 36px;
-  height: 56px;
-  position: absolute;
-  top: 0;
-  right: 15px;
-  z-index: 9;
-}
-
-.adsbygoogle {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 50px;
-  width: auto !important;
-  text-align: center;
-  z-index: 2;
-  overflow: hidden;
-}
-
+/* 动画关键帧 */
 @-webkit-keyframes comment {
   0%,
   100% {
@@ -402,21 +381,73 @@ body {
     background-position: 50% 100%;
   }
 }
-/* 原生按钮保留现有外观，同时支持键盘和辅助技术。 */
-button { font: inherit; }
-#start { border: 0; }
-.time { background: none; border: 0; padding: 0; cursor: pointer; }
-#toggle button { border: 0; background: transparent; }
-button:focus-visible { outline: 3px solid #333; outline-offset: 4px; }
-button:disabled { cursor: default; }
-.playing #toggle { visibility: hidden; pointer-events: none; }
-#temp_container { pointer-events: none; }
-.sr-only {
-  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
-  overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+
+/* 原生按钮和无障碍支持 */
+button {
+  font: inherit;
 }
+
+#start {
+  border: 0;
+}
+
+.time {
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+#toggle button {
+  border: 0;
+  background: transparent;
+}
+
+button:focus-visible {
+  outline: 3px solid #333;
+  outline-offset: 4px;
+}
+
+button:disabled {
+  cursor: default;
+}
+
+.playing #toggle {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+#temp_container {
+  pointer-events: none;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .bg, .title, .comment { animation: none; -webkit-animation: none; }
-  #toggle, #toggle button { transition: none; -webkit-transition: none; }
-  #temp_container { display: none; }
+  .bg,
+  .title,
+  .comment {
+    animation: none;
+    -webkit-animation: none;
+  }
+
+  #toggle,
+  #toggle button {
+    transition: none;
+    -webkit-transition: none;
+  }
+
+  #temp_container {
+    display: none;
+  }
 }
