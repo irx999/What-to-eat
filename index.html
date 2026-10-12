@@ -1,44 +1,37 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>我们天天都要吃些什么</title>
     <meta
       name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+      content="width=device-width, initial-scale=1.0"
     />
-    <!-- 使用新的CSS文件 -->
-    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="assets/css/style.css" />
   </head>
   <body>
-    <div class="bg"></div>
-    <div id="temp_container"></div>
+    <div class="bg" aria-hidden="true"></div>
+    <div id="temp_container" aria-hidden="true"></div>
     <div id="wrapper">
       <h1 class="title">
-        今天<span class="time">晚饭</span>吃<b class="what">什么</b
+        今天<button class="time" type="button" aria-label="切换早饭、午饭或晚饭">晚饭</button>吃<b class="what">什么</b
         ><span class="punctuation">？</span>
       </h1>
-      <span id="start"><span>开始</span></span>
+      <button id="start" type="button" aria-pressed="false"><span>开始</span></button>
+      <p id="result" class="sr-only" role="status" aria-live="polite"></p>
       <p class="os"></p>
       <p>言出必行: "天塌了也得吃这个!"(๑•̀ㅂ•́)و✧</p>
     </div>
-    <div id="toggle">
-      <span data-type="正常选项" class="selected">正常选项</span>
-      <span data-type="公司周边">公司周边</span>
-      <span data-type="龙湖天街">龙湖天街</span>
-      <span data-type="特殊">特殊</span>
-      <span data-type="非正常人类">非正常人类</span>
+    <div id="toggle" role="group" aria-label="食物分类">
+      <button type="button" data-type="正常选项" class="selected" aria-pressed="true">正常选项</button>
+      <button type="button" data-type="公司周边" aria-pressed="false">公司周边</button>
+      <button type="button" data-type="龙湖天街" aria-pressed="false">龙湖天街</button>
+      <button type="button" data-type="特殊" aria-pressed="false">特殊</button>
+      <button type="button" data-type="非正常人类" aria-pressed="false">非正常人类</button>
     </div>
-    <script src="js/zepto.min.js"></script>
-    <script src="js/app.js"></script>
-    <script>
-      var _hmt = _hmt || [];
-      (function () {
-        var hm = document.createElement("script");
-        hm.src = "https://hm.baidu.com/hm.js?1332f8ba9af94ac3b0af1936e1a403c9";
-        var s = document.getElementsByTagName("script")[0];
-        s.parentNode.insertBefore(hm, s);
-      })();
-    </script>
+    <script src="assets/vendor/zepto/zepto.js"></script>
+    <script src="assets/js/data.js"></script>
+    <script src="assets/js/analytics.js"></script>
+    <script src="assets/js/app.js"></script>
   </body>
 </html>
